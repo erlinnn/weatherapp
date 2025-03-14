@@ -4,110 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <style>
-        /* General Page Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #6dd5ed, #2193b0);
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* 🌍 Navigation Bar */
-        nav {
-            background: #333;
-            padding: 10px 0;
-            width: 100%;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        nav ul li {
-            margin: 0 15px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 8px 15px;
-            transition: 0.3s;
-        }
-
-        nav ul li a:hover {
-            background: #555;
-            border-radius: 5px;
-        }
-
-        /* Weather App Container */
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            width: 300px;
-            margin-top: 20px;
-        }
-
-        /* Input Field */
-        input {
-            width: 80%;
-            padding: 8px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        /* Button */
-        button {
-            background: #2193b0;
-            color: white;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background: #0d6efd;
-        }
-
-        /* Weather Output */
-        #weather {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 🌍 Navigation Bar -->
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- 🌤️ Weather App Container -->
     <div class="container">
         <h2>Weather App 🌤️</h2>
         <input type="text" id="city" placeholder="Enter city name">
@@ -115,43 +15,6 @@
         <div id="weather"></div>
     </div>
 
-    <script>
-        async function getWeather() {
-            const apiKey = "32647dfe3600b04381e9560af76464c9"; // Replace with your OpenWeather API key
-            const city = document.getElementById("city").value;
-            const weatherDiv = document.getElementById("weather");
-
-            if (city === "") {
-                weatherDiv.innerHTML = "<p>Please enter a city name.</p>";
-                return;
-            }
-
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.cod === "404") {
-                    weatherDiv.innerHTML = `<p>City not found. Please enter a valid city name.</p>`;
-                    return;
-                }
-
-                const temp = data.main.temp;
-                const weather = data.weather[0].description;
-                const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
-
-                weatherDiv.innerHTML = `
-                    <h3>${data.name}, ${data.sys.country}</h3>
-                    <p>Temperature: ${temp}°C</p>
-                    <p>Weather: ${weather}</p>
-                    <img src="${icon}" alt="Weather Icon">
-                `;
-            } catch (error) {
-                weatherDiv.innerHTML = `<p>Failed to fetch weather data. Try again later.</p>`;
-            }
-        }
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
