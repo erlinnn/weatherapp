@@ -1,3 +1,4 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -5,24 +6,76 @@ body {
     transition: background 0.5s ease-in-out;
 }
 
+/* Container with Glassmorphism */
 .container {
     margin: 100px auto;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     display: inline-block;
+    animation: slide-up 1s ease-out;
 }
 
-input, button {
-    padding: 10px;
-    margin: 10px;
+/* Animated Input */
+input {
+    padding: 12px;
+    width: 200px;
     font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+input:focus {
+    border-color: #ffcc00;
+    background: rgba(255, 255, 255, 0.6);
 }
 
-button {
-    cursor: pointer;
-    background-color: #28a745;
+/* Animated Button */
+.glow-on-hover {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
     color: white;
+    background: #ff7b00;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 123, 0, 0.5);
+}
+.glow-on-hover:hover {
+    background: #ffcc00;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.8);
+}
+
+/* Weather Info Box */
+.weather-info {
+    margin-top: 20px;
+    padding: 20px;
+    font-size: 18px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    display: inline-block;
+    animation: fade-in 1.2s ease-in-out;
+}
+
+/* Fade-in Animation */
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Slide-up Animation */
+@keyframes slide-up {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
