@@ -5,55 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            background: linear-gradient(to right, #87CEEB, #1E90FF); /* Gradient blue background */
-            color: black; /* Black text */
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 500px;
-            margin: 50px auto;
-            background: rgba(255, 255, 255, 0.8); /* Light white background */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        input {
-            padding: 10px;
-            width: 80%;
-            margin: 10px 0;
-            border: 1px solid black;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 15px;
-            border: none;
-            background: black;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: darkgray;
-        }
-    </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>🌍 Weather App</h1>
-        
-        <div class="search-box">
-            <input type="text" id="city" placeholder="Enter city name">
+    <header>
+        <h1>🌎 Live Weather App</h1>
+        <p id="time"></p> <!-- Live Time -->
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Check Your City's Weather 🌤️</h2>
+            <input type="text" id="city" placeholder="Enter city or area name">
             <button onclick="getWeather()">Get Weather</button>
+            <div id="weather"></div>
+            <div id="loading" class="hidden">Loading...</div>
         </div>
 
-        <div id="weather" class="weather-info"></div>
-    </div>
+        <div class="fun-facts">
+            <h3>🌍 Did You Know?</h3>
+            <p id="fact">Loading fun fact...</p> <!-- Fun Fact -->
+        </div>
+
+        <div class="global-weather">
+            <h3>🌦️ Global Weather Updates</h3>
+            <ul id="global-updates"></ul> <!-- Live World Weather -->
+        </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
