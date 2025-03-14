@@ -1,49 +1,84 @@
-const apiKey = "32647dfe3600b04381e9560af76464c9"; // Replace with your OpenWeather API key
-const unsplashApiKey = "47br5Bn2eoFnFeTJGfs-1wOuch3rUpHlD1lbHEIubRQ"; // Replace with your Unsplash API key
-const weatherDiv = document.getElementById("weather");
+/* Apply gradient background and global styles */
+body {
+    background: linear-gradient(to right, #87CEEB, #1E90FF); /* Light to deep blue gradient */
+    color: black; /* Black text */
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    transition: background 0.5s ease-in-out; /* Smooth transition when background updates */
+}
 
-async function getWeather() {
-    const city = document.getElementById("city").value.trim(); // Get city input
+/* Weather App Container */
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: rgba(255, 255, 255, 0.9); /* Light white transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+}
 
-    if (city === "") {
-        weatherDiv.innerHTML = "<p>Please enter a city name.</p>";
-        return;
+/* Input Field */
+input {
+    padding: 10px;
+    width: 80%;
+    margin: 10px 0;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    padding: 10px 15px;
+    border: none;
+    background: black;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+    background: darkgray;
+}
+
+/* Weather Info Display */
+.weather-info {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Loader (Animated) */
+.loader {
+    display: none;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid black;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
     }
-
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-    const imageUrl = `https://api.unsplash.com/photos/random?query=${city}&client_id=${unsplashApiKey}`;
-
-    try {
-        const [weatherResponse, imageResponse] = await Promise.all([
-            fetch(weatherUrl),
-            fetch(imageUrl)
-        ]);
-
-        const weatherData = await weatherResponse.json();
-        const imageData = await imageResponse.json();
-
-        if (weatherData.cod === 200) {
-            // Get weather condition
-            const weatherCondition = weatherData.weather[0].description.toLowerCase();
-
-            // Update Background Image using API response
-            document.body.style.backgroundImage = `url(${imageData.urls.regular})`;
-            document.body.style.backgroundSize = "cover";
-            document.body.style.backgroundPosition = "center";
-            document.body.style.transition = "background 0.5s ease-in-out";
-
-            // Display Weather Info
-            weatherDiv.innerHTML = `
-                <h2>${weatherData.name}, ${weatherData.sys.country}</h2>
-                <p>🌡️ Temperature: ${weatherData.main.temp}°C</p>
-                <p>☁️ Condition: ${weatherData.weather[0].description}</p>
-                <p>💨 Humidity: ${weatherData.main.humidity}%</p>
-            `;
-        } else {
-            weatherDiv.innerHTML = "<p>❌ City not found! Please try again.</p>";
-        }
-    } catch (error) {
-        weatherDiv.innerHTML = "<p>⚠️ Error fetching data. Check your internet connection.</p>";
-        console.error("Error fetching weather or image data:", error);
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
+
+/* Loading Spinner Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
