@@ -6,7 +6,7 @@
     <title>Weather App</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="background-color: beige;"> <!-- Set background to beige -->
+<body style="background-color: beige; color: black;"> <!-- Beige background & black text -->
 
     <div class="container">
         <h1 class="fade-in" id="greeting">🌍 Weather App</h1>
@@ -20,11 +20,6 @@
         <div class="loader" id="loader"></div>  <!-- Loader Animation -->
 
         <div id="weather" class="weather-info"></div>
-
-        <button class="music-btn" onclick="toggleMusic()">🎶 Play Music</button>
-        <audio id="background-music" loop>
-            <source src="sounds/rain.mp3" type="audio/mpeg">
-        </audio>
     </div>
 
     <script src="script.js"></script>
