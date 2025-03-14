@@ -9,6 +9,9 @@ async function getWeather() {
         return;
     }
 
+    // Show loading animation
+    weatherDiv.innerHTML = `<p>⏳ Fetching weather data...</p>`;
+
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
     try {
@@ -26,7 +29,7 @@ async function getWeather() {
             weatherDiv.innerHTML = `
                 <h2>${data.name}, ${data.sys.country}</h2>
                 <p>🌡️ Temperature: ${data.main.temp}°C</p>
-                <p>☁️ Condition: ${data.weather[0].description}</p>
+                <p>☁️ Condition: <img src="icons/${data.weather[0].icon}.png"></p>
                 <p>💨 Humidity: ${data.main.humidity}%</p>
             `;
         } else {
@@ -53,7 +56,7 @@ function updateBackground(condition) {
     } else if (condition.includes("snow")) {
         body.style.backgroundImage = "url('images/snow.jpg')";
     } else {
-        body.style.backgroundImage = "url('images/default.jpg')";
+        body.style.backgroundImage = "url('images/defaul.jpg')";
     }
 
     body.style.backgroundSize = "cover";
