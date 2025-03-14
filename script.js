@@ -95,7 +95,7 @@ showRandomFact();
 
 // Function to fetch global weather updates
 async function getGlobalWeatherUpdates() {
-    const cities = ["Bengaluru", "Chennai", "Kodaikanal", "Mysore", "Gokarna"];
+    const cities = ["New York", "London", "Tokyo", "Sydney", "Dubai"];
     globalWeatherDiv.innerHTML = "<h3>🌍 Global Weather Updates</h3>";
 
     for (const city of cities) {
