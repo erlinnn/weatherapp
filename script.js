@@ -1,73 +1,60 @@
-const apiKey = "32647dfe3600b04381e9560af76464c9"; 
+const apiKey = "32647dfe3600b04381e9560af76464c9";  // Replace with your OpenWeather API key
+const unsplashApiKey = "47br5Bn2eoFnFeTJGfs-1wOuch3rUpHlD1lbHEIubRQ"; // Replace with your Unsplash API key
 const weatherDiv = document.getElementById("weather");
-const loader = document.getElementById("loader");
-const greeting = document.getElementById("greeting");
-const music = document.getElementById("background-music");
 
-// Set Greeting Based on Time
-function updateGreeting() {
-    const hour = new Date().getHours();
-    if (hour < 12) {
-        greeting.innerText = "🌞 Good Morning! Check the Weather:";
-    } else if (hour < 18) {
-        greeting.innerText = "☀️ Good Afternoon! Check the Weather:";
-    } else {
-        greeting.innerText = "🌙 Good Evening! Check the Weather:";
-    }
-}
-
-// Fetch Weather by City Name
 async function getWeather() {
-    const city = document.getElementById("city").value.trim();
-    if (!city) {
+    const city = document.getElementById("city").value.trim(); // Get city input
+
+    if (city === "") {
         weatherDiv.innerHTML = "<p>Please enter a city name.</p>";
         return;
     }
 
-    loader.style.display = "block"; 
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(weatherUrl);
         const data = await response.json();
 
-        loader.style.display = "none";  
-
         if (data.cod === 200) {
-            updateBackground(city);
+            // Update Background Image with City Image
+            fetchCityImage(city);
+
+            // Display Weather Info
             weatherDiv.innerHTML = `
                 <h2>${data.name}, ${data.sys.country}</h2>
-                <p>🌡️ Temperature: ${data.main.temp}°C (Feels like ${data.main.feels_like}°C)</p>
-                <p>💨 Wind Speed: ${data.wind.speed} m/s</p>
-                <p>🌍 Pressure: ${data.main.pressure} hPa</p>
+                <p>🌡️ Temperature: ${data.main.temp}°C</p>
+                <p>☁️ Condition: ${data.weather[0].description}</p>
+                <p>💨 Humidity: ${data.main.humidity}%</p>
             `;
         } else {
-            weatherDiv.innerHTML = "<p>❌ City not found!</p>";
+            weatherDiv.innerHTML = "<p>❌ City not found! Please try again.</p>";
         }
     } catch (error) {
-        loader.style.display = "none";  
-        weatherDiv.innerHTML = "<p>⚠️ Error fetching data.</p>";
+        weatherDiv.innerHTML = "<p>⚠️ Error fetching data. Check your internet connection.</p>";
+        console.error("Error fetching weather:", error);
     }
 }
 
-// Fetch User’s Location Weather
-function getLocationWeather() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
-            const response = await fetch(url);
-            const data = await response.json();
-            weatherDiv.innerHTML = `<h2>${data.name}</h2><p>🌡️ ${data.main.temp}°C</p>`;
-        });
+// Function to fetch city image from Unsplash
+async function fetchCityImage(city) {
+    const unsplashUrl = `https://api.unsplash.com/photos/random?query=${city}&client_id=${unsplashApiKey}`;
+
+    try {
+        const response = await fetch(unsplashUrl);
+        const data = await response.json();
+
+        if (data.urls && data.urls.full) {
+            document.body.style.backgroundImage = `url('${data.urls.full}')`;
+        } else {
+            document.body.style.backgroundImage = "url('images/default.jpg')"; // Fallback image
+        }
+
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.transition = "background 0.5s ease-in-out";
+    } catch (error) {
+        console.error("Error fetching city image:", error);
+        document.body.style.backgroundImage = "url('images/default.jpg')";
     }
 }
-
-// Play/Stop Background Music
-function toggleMusic() {
-    music.paused ? music.play() : music.pause();
-}
-
-updateGreeting();
