@@ -1,135 +1,65 @@
-/* General Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
+/* General Styling */
 body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: url('images/default.jpg') no-repeat center center/cover;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-image: url('images/default.jpg'); 
+    background-size: cover;
+    background-position: center;
     transition: background 0.5s ease-in-out;
 }
 
-/* Animated Background */
-body {
-    background: linear-gradient(-45deg, #28313B, #485461, #5C6B73, #28313B);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
-
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Glassmorphism Container */
+/* Glassmorphism Effect */
 .container {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-    padding: 30px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 50px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-h2 {
-    font-size: 28px;
-    margin-bottom: 15px;
-}
-
-input {
-    width: 100%;
-    padding: 12px;
+/* Input & Button */
+input, button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
     border: none;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 16px;
 }
 
 button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 16px;
-    background: #ff7f50;
+    background: #ff9800;
     color: white;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 button:hover {
-    background: #ff4500;
+    background: #e68900;
 }
 
-/* Navbar Styling */
-nav {
-    position: absolute;
+/* Weather Info */
+#weather {
+    margin-top: 20px;
+    display: none;
+}
+
+#weather img {
+    width: 80px;
+    height: 80px;
+    margin-top: 10px;
+}
+
+/* Snow Animation */
+.snowfall {
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
-    padding: 10px 30px;
-    display: flex;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    color: white;
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-nav ul li a:hover {
-    color: #ff7f50;
-}
-
-/* Footer */
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 10px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    color: white;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-        padding: 20px;
-    }
-
-    nav {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    nav ul {
-        margin-top: 10px;
-    }
+    height: 100%;
+    pointer-events: none;
+    background: url('images/snowflakes.gif');
+    background-size: cover;
+    opacity: 0.4;
+    display: none;
 }
