@@ -1,43 +1,32 @@
-const apiKey = "32647dfe3600b04381e9560af76464c9";  // Replace with your actual API key
+const apiKey = "32647dfe3600b04381e9560af76464c9";  // Replace with your OpenWeather API key
+const unsplashApiKey = "47br5Bn2eoFnFeTJGfs-1wOuch3rUpHlD1lbHEIubRQ"; // Replace with your Unsplash API key
 const weatherDiv = document.getElementById("weather");
-const cityName = document.getElementById("city-name");
-const tempDisplay = document.getElementById("temperature");
-const conditionDisplay = document.getElementById("condition");
-const weatherIcon = document.getElementById("weather-icon");
-const convertBtn = document.getElementById("convert-btn");
-
-let isCelsius = true;
 
 async function getWeather() {
-    const city = document.getElementById("city").value.trim();
+    const city = document.getElementById("city").value.trim(); // Get city input
 
     if (city === "") {
         weatherDiv.innerHTML = "<p>Please enter a city name.</p>";
         return;
     }
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(weatherUrl);
         const data = await response.json();
 
         if (data.cod === 200) {
-            // Get weather condition
-            const weatherCondition = data.weather[0].description.toLowerCase();
-            const temp = data.main.temp;
-            const iconCode = data.weather[0].icon;
-            
-            // Update Background Image & Effects
-            updateBackground(weatherCondition);
+            // Update Background Image with City Image
+            fetchCityImage(city);
 
             // Display Weather Info
-            cityName.innerHTML = `${data.name}, ${data.sys.country}`;
-            tempDisplay.innerHTML = `🌡️ ${temp}°C`;
-            conditionDisplay.innerHTML = `☁️ ${data.weather[0].description}`;
-            weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
-
-            weatherDiv.style.display = "block";
+            weatherDiv.innerHTML = `
+                <h2>${data.name}, ${data.sys.country}</h2>
+                <p>🌡️ Temperature: ${data.main.temp}°C</p>
+                <p>☁️ Condition: ${data.weather[0].description}</p>
+                <p>💨 Humidity: ${data.main.humidity}%</p>
+            `;
         } else {
             weatherDiv.innerHTML = "<p>❌ City not found! Please try again.</p>";
         }
@@ -47,45 +36,25 @@ async function getWeather() {
     }
 }
 
-// Function to change background image & animations
-function updateBackground(condition) {
-    const body = document.body;
-    const snowfall = document.querySelector(".snowfall");
+// Function to fetch city image from Unsplash
+async function fetchCityImage(city) {
+    const unsplashUrl = `https://api.unsplash.com/photos/random?query=${city}&client_id=${unsplashApiKey}`;
 
-    if (condition.includes("clear")) {
-        body.style.backgroundImage = "url('images/sunny.jpg')";
-        snowfall.style.display = "none";
-    } else if (condition.includes("cloud")) {
-        body.style.backgroundImage = "url('images/cloudy.jpg')";
-        snowfall.style.display = "none";
-    } else if (condition.includes("rain")) {
-        body.style.backgroundImage = "url('images/rainy.jpg')";
-        snowfall.style.display = "none";
-    } else if (condition.includes("thunderstorm")) {
-        body.style.backgroundImage = "url('images/storm.jpg')";
-        snowfall.style.display = "none";
-    } else if (condition.includes("snow") || condition.includes("flurries") || condition.includes("blizzard")) { 
-        body.style.backgroundImage = "url('images/snow.jpg')";
-        snowfall.style.display = "block";  // Show snowfall effect
-    } else {
-        body.style.backgroundImage = "url('images/default.jpg')";
-        snowfall.style.display = "none";
+    try {
+        const response = await fetch(unsplashUrl);
+        const data = await response.json();
+
+        if (data.urls && data.urls.full) {
+            document.body.style.backgroundImage = `url('${data.urls.full}')`;
+        } else {
+            document.body.style.backgroundImage = "url('images/default.jpg')"; // Fallback image
+        }
+
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.transition = "background 0.5s ease-in-out";
+    } catch (error) {
+        console.error("Error fetching city image:", error);
+        document.body.style.backgroundImage = "url('images/default.jpg')";
     }
 }
-
-// Toggle Temperature Unit (Celsius/Fahrenheit)
-convertBtn.addEventListener("click", function() {
-    let currentTemp = parseFloat(tempDisplay.innerHTML.match(/[-]?\d+(\.\d+)?/)[0]);
-
-    if (isCelsius) {
-        let fahrenheit = (currentTemp * 9/5) + 32;
-        tempDisplay.innerHTML = `🌡️ ${fahrenheit.toFixed(1)}°F`;
-        convertBtn.innerHTML = "Switch to °C";
-    } else {
-        let celsius = (currentTemp - 32) * 5/9;
-        tempDisplay.innerHTML = `🌡️ ${celsius.toFixed(1)}°C`;
-        convertBtn.innerHTML = "Switch to °F";
-    }
-
-    isCelsius = !isCelsius;
-});
