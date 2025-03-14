@@ -9,10 +9,22 @@
 <body>
 
     <div class="container">
-        <h1 class="fade-in">🌍 Weather App</h1>
-        <input type="text" id="city" placeholder="Enter city name">
-        <button class="glow-on-hover" onclick="getWeather()">Get Weather</button>
+        <h1 class="fade-in" id="greeting">🌍 Weather App</h1>
+        
+        <div class="search-box">
+            <input type="text" id="city" placeholder="Enter city name">
+            <button class="glow-on-hover" onclick="getWeather()">Get Weather</button>
+            <button class="location-btn" onclick="getLocationWeather()">📍 My Location</button>
+        </div>
+
+        <div class="loader" id="loader"></div>  <!-- Loader Animation -->
+
         <div id="weather" class="weather-info"></div>
+
+        <button class="music-btn" onclick="toggleMusic()">🎶 Play Music</button>
+        <audio id="background-music" loop>
+            <source src="sounds/rain.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <script src="script.js"></script>
