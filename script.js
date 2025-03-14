@@ -1,9 +1,11 @@
 const weatherApiKey = "32647dfe3600b04381e9560af76464c9"; // OpenWeatherMap API Key
 const unsplashApiKey = "47br5Bn2eoFnFeTJGfs-1wOuch3rUpHlD1lbHEIubRQ"; // Unsplash API Key
+
 const weatherDiv = document.getElementById("weather");
 const timeDiv = document.getElementById("time");
 const factDiv = document.getElementById("fact");
 const globalWeatherDiv = document.getElementById("globalWeather");
+const extraContent = document.getElementById("extraContent"); // Wrapper for facts and global weather
 
 // Function to fetch weather data
 async function getWeather() {
@@ -22,6 +24,9 @@ async function getWeather() {
 
         if (data.cod === 200) {
             updateBackground(city); // Update background with Unsplash API
+
+            // Hide extra content when a city is searched
+            extraContent.style.display = "none";
 
             weatherDiv.innerHTML = `
                 <h2>${data.name}, ${data.sys.country}</h2>
