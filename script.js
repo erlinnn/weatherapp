@@ -1,60 +1,60 @@
-const apiKey = "32647dfe3600b04381e9560af76464c9";  
-const weatherDiv = document.getElementById("weather");
+const API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your API key
 
-async function getWeather() {
-    const city = document.getElementById("city").value.trim(); 
-
-    if (city === "") {
-        weatherDiv.innerHTML = "<p>Please enter a city name.</p>";
+function getWeather() {
+    const city = document.getElementById("city").value;
+    if (!city) {
+        alert("Please enter a city name!");
         return;
     }
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
+    .then(response => response.json())
+    .then(data => {
         if (data.cod === 200) {
-            const weatherCondition = data.weather[0].description.toLowerCase();
-            
-
-            updateBackground(weatherCondition);
-
-            
-            weatherDiv.innerHTML = `
-                <h2>${data.name}, ${data.sys.country}</h2>
-                <p>🌡️ Temperature: ${data.main.temp}°C</p>
-                <p>☁️ Condition: ${data.weather[0].description}</p>
-                <p>💨 Humidity: ${data.main.humidity}%</p>
+            document.getElementById("weather").innerHTML = `
+                <h3>${data.name}, ${data.sys.country}</h3>
+                <p>🌡️ ${data.main.temp}°C</p>
+                <p>☁️ ${data.weather[0].main}</p>
             `;
+
+            changeBackground(data.weather[0].main);
         } else {
-            weatherDiv.innerHTML = "<p>❌ City not found! Please try again.</p>";
+            alert("City not found! Please try again.");
         }
-    } catch (error) {
-        weatherDiv.innerHTML = "<p>⚠️ Error fetching data. Check your internet connection.</p>";
-        console.error("Error fetching weather:", error);
-    }
+    })
+    .catch(error => {
+        console.error("Error fetching data:", error);
+        alert("Failed to fetch weather data. Please try again later.");
+    });
 }
 
-function updateBackground(condition) {
-    const body = document.body;
+function changeBackground(weatherCondition) {
+    let imageUrl = "images/default.jpg"; // Default background
 
-    if (condition.includes("clear")) {
-        body.style.backgroundImage = "url('images/sunny.jpg')";
-    } else if (condition.includes("cloud")) {
-        body.style.backgroundImage = "url('images/cloudy.jpg')";
-    } else if (condition.includes("rain")) {
-        body.style.backgroundImage = "url('images/rainy.jpg')";
-    } else if (condition.includes("thunderstorm")) {
-        body.style.backgroundImage = "url('images/storm.jpg')";
-    } else if (condition.includes("snow")) {
-        body.style.backgroundImage = "url('images/snow.jpg')";
-    } else {
-        body.style.backgroundImage = "url('images/default.jpg')";
+    switch (weatherCondition.toLowerCase()) {
+        case "clear":
+            imageUrl = "images/clear.jpg";
+            break;
+        case "clouds":
+            imageUrl = "images/cloudy.jpg";
+            break;
+        case "rain":
+            imageUrl = "images/rainy.jpg";
+            break;
+        case "snow":
+            imageUrl = "images/snowy.jpg";
+            break;
+        case "thunderstorm":
+            imageUrl = "images/thunderstorm.jpg";
+            break;
+        case "drizzle":
+            imageUrl = "images/drizzle.jpg";
+            break;
+        case "mist":
+        case "fog":
+            imageUrl = "images/foggy.jpg";
+            break;
     }
 
-    body.style.backgroundSize = "cover";
-    body.style.backgroundPosition = "center";
-    body.style.transition = "background 0.5s ease-in-out";
+    document.body.style.background = `url('${imageUrl}') no-repeat center center/cover`;
 }
