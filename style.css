@@ -1,55 +1,84 @@
+/* Apply gradient background and global styles */
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    color: black;
+    background: linear-gradient(to right, #87CEEB, #1E90FF); /* Light to deep blue gradient */
+    color: black; /* Black text */
+    font-family: 'Poppins', sans-serif;
     text-align: center;
-    padding: 20px;
-    transition: background 0.5s ease-in-out;
+    margin: 0;
+    padding: 0;
+    transition: background 0.5s ease-in-out; /* Smooth transition when background updates */
 }
 
+/* Weather App Container */
 .container {
-    background: white;
+    max-width: 500px;
+    margin: 50px auto;
+    background: rgba(255, 255, 255, 0.9); /* Light white transparent background */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: inline-block;
-    margin-top: 50px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
 }
 
+/* Input Field */
 input {
     padding: 10px;
-    width: 200px;
-    margin: 10px;
-    border: 1px solid #ccc;
+    width: 80%;
+    margin: 10px 0;
+    border: 2px solid black;
     border-radius: 5px;
+    font-size: 16px;
 }
 
+/* Buttons */
 button {
     padding: 10px 15px;
-    background-color: #008CBA;
-    color: white;
     border: none;
-    cursor: pointer;
+    background: black;
+    color: white;
     border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-    background-color: #005f73;
+    background: darkgray;
 }
 
-#weather {
+/* Weather Info Display */
+.weather-info {
     margin-top: 20px;
     font-size: 18px;
+    font-weight: bold;
 }
 
-.extras {
-    margin-top: 30px;
-    padding: 15px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* Loader (Animated) */
+.loader {
+    display: none;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid black;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
 }
 
-#funFact {
-    font-style: italic;
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading Spinner Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
