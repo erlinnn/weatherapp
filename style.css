@@ -1,35 +1,32 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #1e90ff, #87cefa);
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
     color: black;
     text-align: center;
     padding: 20px;
-}
-
-header {
-    font-size: 1.5em;
-    font-weight: bold;
+    transition: background 0.5s ease-in-out;
 }
 
 .container {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    width: 50%;
-    margin: auto;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    margin-top: 50px;
 }
 
 input {
     padding: 10px;
-    border-radius: 5px;
+    width: 200px;
+    margin: 10px;
     border: 1px solid #ccc;
-    width: 60%;
+    border-radius: 5px;
 }
 
 button {
     padding: 10px 15px;
-    background: #ff9800;
+    background-color: #008CBA;
     color: white;
     border: none;
     cursor: pointer;
@@ -37,43 +34,22 @@ button {
 }
 
 button:hover {
-    background: #f57c00;
+    background-color: #005f73;
 }
 
-.fun-facts {
+#weather {
     margin-top: 20px;
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    width: 40%;
-    margin: auto;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-.global-weather {
-    margin-top: 20px;
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    width: 40%;
-    margin: auto;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-.city-image {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    margin-top: 10px;
-}
-
-/* Loader */
-.hidden {
-    display: none;
-}
-
-#loading {
     font-size: 18px;
-    font-weight: bold;
-    color: #ff9800;
+}
+
+.extras {
+    margin-top: 30px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#funFact {
+    font-style: italic;
 }
