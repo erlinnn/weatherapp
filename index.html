@@ -8,30 +8,23 @@
 </head>
 <body>
 
-    <header>
-        <h1>🌎 Live Weather App</h1>
-        <p id="time"></p> <!-- Live Time -->
-    </header>
+    <div class="container">
+        <h1>Weather App 🌤️</h1>
+        <div id="current-time"></div> <!-- Time Display -->
 
-    <main>
-        <div class="container">
-            <h2>Check Your City's Weather 🌤️</h2>
-            <input type="text" id="city" placeholder="Enter city or area name">
-            <button onclick="getWeather()">Get Weather</button>
-            <div id="weather"></div>
-            <div id="loading" class="hidden">Loading...</div>
-        </div>
+        <input type="text" id="city" placeholder="Enter city name">
+        <button onclick="getWeather()">Get Weather</button>
+        <div id="weather"></div>
+        
+        <!-- Global Weather Updates & Fun Facts -->
+        <div id="global-weather"></div>
+        <div id="fun-fact"></div>
+    </div>
 
-        <div class="fun-facts">
-            <h3>🌍 Did You Know?</h3>
-            <p id="fact">Loading fun fact...</p> <!-- Fun Fact -->
-        </div>
-
-        <div class="global-weather">
-            <h3>🌦️ Global Weather Updates</h3>
-            <ul id="global-updates"></ul> <!-- Live World Weather -->
-        </div>
-    </main>
+    <!-- Footer with 50% opacity -->
+    <footer>
+        <p>Created by Sumukh R and Team</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
