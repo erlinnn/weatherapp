@@ -1,40 +1,59 @@
-const weatherApiKey = "32647dfe3600b04381e9560af76464c9"; // OpenWeatherMap API Key
-const unsplashApiKey = "47br5Bn2eoFnFeTJGfs-1wOuch3rUpHlD1lbHEIubRQ"; // Unsplash API Key
-
+const apiKey = "32647dfe3600b04381e9560af76464c9"; // OpenWeatherMap API
+const unsplashApiKey = "47br5Bn2eoFnFeTJGfs-1wOuch3rUpHlD1lbHEIubRQ"; // Unsplash API
 const weatherDiv = document.getElementById("weather");
-const timeDiv = document.getElementById("time");
-const factDiv = document.getElementById("fact");
-const globalWeatherDiv = document.getElementById("globalWeather");
-const extraContent = document.getElementById("extraContent"); // Wrapper for facts and global weather
 
-// Function to fetch weather data
+// Fun facts about weather
+const funFacts = [
+    "Lightning is five times hotter than the surface of the sun!",
+    "Antarctica is the driest, coldest, and windiest continent on Earth.",
+    "Raindrops can be as small as 0.02 inches or as big as 0.33 inches.",
+    "Snowflakes can take up to an hour to fall from the cloud to the ground.",
+    "The coldest temperature ever recorded on Earth was -128.6°F (-89.2°C) in Antarctica."
+];
+
+// Function to update the time in 12-hour format
+function updateTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    document.getElementById("time").innerText = `${hours}:${minutes} ${ampm}`;
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// Function to fetch weather details
 async function getWeather() {
-    const city = document.getElementById("city").value.trim(); // Get city input
+    const city = document.getElementById("city").value.trim();
 
     if (city === "") {
         weatherDiv.innerHTML = "<p>Please enter a city name.</p>";
         return;
     }
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherApiKey}`;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
     try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const weatherResponse = await fetch(weatherUrl);
+        const weatherData = await weatherResponse.json();
 
-        if (data.cod === 200) {
-            updateBackground(city); // Update background with Unsplash API
+        if (weatherData.cod === 200) {
+            const weatherCondition = weatherData.weather[0].description.toLowerCase();
 
-            // Hide extra content when a city is searched
-            extraContent.style.display = "none";
+            // Fetch background image from Unsplash
+            await updateBackground(city);
 
             weatherDiv.innerHTML = `
-                <h2>${data.name}, ${data.sys.country}</h2>
-                <p>🌡️ Temperature: ${data.main.temp}°C</p>
-                <p>☁️ Condition: ${data.weather[0].description}</p>
-                <p>💨 Humidity: ${data.main.humidity}%</p>
-                <p>🌍 Wind Speed: ${data.wind.speed} m/s</p>
+                <h2>${weatherData.name}, ${weatherData.sys.country}</h2>
+                <p>🌡️ Temperature: ${weatherData.main.temp}°C</p>
+                <p>☁️ Condition: ${weatherCondition}</p>
+                <p>💨 Humidity: ${weatherData.main.humidity}%</p>
             `;
+
+            // Hide fun facts and global weather updates
+            document.querySelector(".extras").style.display = "none";
         } else {
             weatherDiv.innerHTML = "<p>❌ City not found! Please try again.</p>";
         }
@@ -44,74 +63,41 @@ async function getWeather() {
     }
 }
 
-// Function to update background using Unsplash API
+// Function to change background image based on the city
 async function updateBackground(city) {
     try {
-        const response = await fetch(`https://api.unsplash.com/photos/random?query=${city}&client_id=${unsplashApiKey}`);
-        const data = await response.json();
+        const unsplashUrl = `https://api.unsplash.com/photos/random?query=${city}&client_id=${unsplashApiKey}`;
+        const unsplashResponse = await fetch(unsplashUrl);
+        const unsplashData = await unsplashResponse.json();
 
-        if (data.urls && data.urls.full) {
-            document.body.style.backgroundImage = `url('${data.urls.full}')`;
-            document.body.style.backgroundSize = "cover";
-            document.body.style.backgroundPosition = "center";
-            document.body.style.transition = "background 0.5s ease-in-out";
+        if (unsplashData.urls && unsplashData.urls.regular) {
+            document.body.style.backgroundImage = `url('${unsplashData.urls.regular}')`;
         }
     } catch (error) {
-        console.error("Error fetching background image:", error);
+        console.error("Error fetching Unsplash image:", error);
     }
 }
 
-// Function to show live time in 12-hour format
-function updateTime() {
-    const now = new Date();
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-    let amPm = hours >= 12 ? "PM" : "AM";
-
-    hours = hours % 12 || 12;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-
-    timeDiv.innerHTML = `<p>⏰ Current Time: ${hours}:${minutes} ${amPm}</p>`;
-}
-setInterval(updateTime, 1000);
-updateTime();
-
-// Function to display random fun weather facts
-const funFacts = [
-    "🌪️ The fastest wind speed ever recorded on Earth was 253 mph during a tornado.",
-    "🌡️ Antarctica is the coldest place on Earth, reaching -128.6°F (-89.2°C).",
-    "☔ The wettest place on Earth is Mawsynram, India, receiving 467 inches of rain per year!",
-    "⚡ Lightning strikes the Earth about 100 times per second!",
-    "🌊 The highest recorded ocean wave was 112 feet during a typhoon.",
-    "❄️ The largest snowflake ever recorded was 15 inches wide!"
-];
-
-function showRandomFact() {
-    const randomIndex = Math.floor(Math.random() * funFacts.length);
-    factDiv.innerHTML = `<p>💡 Fun Fact: ${funFacts[randomIndex]}</p>`;
-}
-setInterval(showRandomFact, 10000);
-showRandomFact();
-
 // Function to fetch global weather updates
-async function getGlobalWeatherUpdates() {
+async function getGlobalWeather() {
     const cities = ["New York", "London", "Tokyo", "Sydney", "Dubai"];
-    globalWeatherDiv.innerHTML = "<h3>🌍 Global Weather Updates</h3>";
+    let updates = "";
 
     for (const city of cities) {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
         try {
-            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${weatherApiKey}`);
+            const response = await fetch(url);
             const data = await response.json();
-
             if (data.cod === 200) {
-                globalWeatherDiv.innerHTML += `
-                    <p>📍 ${city}: ${data.main.temp}°C, ${data.weather[0].description}</p>
-                `;
+                updates += `<p>🌍 ${data.name}: ${data.main.temp}°C, ${data.weather[0].description}</p>`;
             }
         } catch (error) {
             console.error(`Error fetching weather for ${city}:`, error);
         }
     }
+    document.getElementById("globalWeather").innerHTML = updates;
 }
-getGlobalWeatherUpdates();
-setInterval(getGlobalWeatherUpdates, 60000); // Refresh every 60 seconds
+getGlobalWeather();
+
+// Show a random fun fact
+document.getElementById("funFact").innerText = funFacts[Math.floor(Math.random() * funFacts.length)];
